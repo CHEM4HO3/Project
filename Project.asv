@@ -1,5 +1,5 @@
 clc;
-% clear;
+clear;
 close all;
 
 % Create connection with database
@@ -122,12 +122,11 @@ variables = zeros(5000, (A_player*11*2 + A_team*2));
 outcome = zeros(5000, 2);
 skip = false;
 
-% shuffle data to get first 5000 valid matches
+% shuffle data
 match = match(randperm(height(match)),:);
 
 
 % Make ANN input matrix with home and away team's attributes andplayer attributes and make output matrix based on the home and away score
-% dont include match if team or player attributes is not from this year
 for row_index = 1:height(match)
     row = match(row_index,:);
 
@@ -200,10 +199,9 @@ for row_index = 1:height(match)
     end
 end
 
+disp('got data now training')
 
-% run data though ANN with 100 hidden nodes
-net = feedforwardnet(80,'trainlm');
-net.layers{1}.transferFcn = 'logsig';
+net = feedforwardnet(100,'trainlm');
 net = train(net, variables', outcome');
 
 
